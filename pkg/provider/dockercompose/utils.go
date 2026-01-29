@@ -89,6 +89,22 @@ func runComposeUp(dockerCli command.Cli, project *types.Project) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
 
+	servicesToBuild := []string{}
+	for name, service := range project.Services {
+		if service.Build != nil {
+			servicesToBuild = append(servicesToBuild, name)
+		}
+	}
+
+	if len(servicesToBuild) > 0 {
+		err := composeService.Build(ctx, project, api.BuildOptions{
+			Services: servicesToBuild,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
 	err := composeService.Pull(ctx, project, api.PullOptions{})
 	if err != nil {
 		return err

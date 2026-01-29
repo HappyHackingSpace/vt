@@ -405,9 +405,12 @@ func findTemplateInCategory(categoryPath, templateID string) (string, error) {
 			return nil
 		}
 
-		if d.Name() == templateID && isTemplateDirectory(path) {
-			foundPath = path
-			return filepath.SkipAll
+		if isTemplateDirectory(path) {
+			if d.Name() == templateID {
+				foundPath = path
+				return filepath.SkipAll
+			}
+			return filepath.SkipDir
 		}
 
 		return nil
