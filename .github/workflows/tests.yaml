@@ -65,19 +65,31 @@ jobs:
       - name: Run typos
         uses: crate-ci/typos@v1
 
-  release-linux:
-    name: "🐧 Release Linux"
+  create-release:
+    name: "📦 Create Release"
     needs: lint
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
-      - name: Fetch all tags
-        run: git fetch --force --tags
+      - name: Create release
+        run: |
+          if ! gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
+            gh release create "${GITHUB_REF_NAME}" --generate-notes
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-linux:
+    name: "🐧 Release Linux"
+    needs: create-release
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Set up Go
         uses: actions/setup-go@v6
@@ -99,16 +111,16 @@ jobs:
 
           shasum -a 256 vt_${VERSION}_linux_*.zip > "vt_${VERSION}_linux_checksums.txt"
 
-          gh release create "${GITHUB_REF_NAME}" \
+          gh release upload "${GITHUB_REF_NAME}" \
             vt_${VERSION}_linux_*.zip \
             "vt_${VERSION}_linux_checksums.txt" \
-            --generate-notes
+            --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-windows:
     name: "🪟 Release Windows"
-    needs: release-linux
+    needs: create-release
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04-arm
     steps:
@@ -144,7 +156,7 @@ jobs:
 
   release-darwin:
     name: "🍎 Release macOS"
-    needs: release-linux
+    needs: create-release
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: macos-latest
     steps:
