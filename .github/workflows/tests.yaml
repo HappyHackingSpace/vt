@@ -175,7 +175,7 @@ jobs:
           VERSION=${GITHUB_REF_NAME#v}
 
           for ARCH in amd64 arm64; do
-            GOOS=darwin GOARCH=$ARCH CGO_ENABLED=0 go build \
+            CGO_ENABLED=1 GOOS=darwin GOARCH=$ARCH go build \
               -ldflags="-s -w" -o vt ./cmd/vt/main.go
             zip "vt_${VERSION}_macOS_${ARCH}.zip" vt
             rm vt
