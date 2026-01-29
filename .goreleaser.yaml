@@ -5,24 +5,36 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - id: linux-windows
+    env:
       - CGO_ENABLED=0
     goos:
       - windows
       - linux
-      - darwin
     goarch:
       - amd64
       - "386"
       - arm
       - arm64
     ignore:
-      - goos: darwin
-        goarch: "386"
       - goos: windows
         goarch: arm
     binary: "{{ .ProjectName }}"
     main: ./cmd/vt/main.go
+
+  - id: darwin
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    binary: "{{ .ProjectName }}"
+    main: ./cmd/vt/main.go
+
+partial:
+  by: goos
 
 archives:
   - formats:
@@ -34,3 +46,4 @@ archives:
 
 checksum:
   algorithm: sha256
+  split: true
