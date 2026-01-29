@@ -28,7 +28,7 @@ jobs:
 
       - uses: actions/setup-go@v6
         with:
-          go-version: "^1.23"
+          go-version: "1.25"
           cache: true
 
       - uses: golangci/golangci-lint-action@v9
@@ -60,7 +60,7 @@ jobs:
         run: gosec ./...
 
       - name: Run typos
-        uses: crate-ci/typos@master
+        uses: crate-ci/typos@v1
 
   release:
     name: "🎉 Release"
@@ -79,7 +79,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: "1.24"
+          go-version: "1.25"
           cache: true
 
       - name: Run GoReleaser

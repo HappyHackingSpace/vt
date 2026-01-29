@@ -1,25 +1,25 @@
 # Build stage for development tools
-FROM golang:1.24.0-bullseye AS dev-tools
+FROM golang:1.25.6-bookworm AS dev-tools
 
 # Install build dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git=1:2.30.* \
-    make=4.3-4.1 \
+    git \
+    make \
     python3-pip \
     python3-setuptools \
     && rm -rf /var/lib/apt/lists/* && \
-    pip3 install --no-cache-dir pre-commit
+    pip3 install --no-cache-dir --break-system-packages pre-commit
 
-# Install Go tools with versions compatible with Go 1.24.0
-RUN go install mvdan.cc/gofumpt@v0.5.0 && \
-    go install github.com/kisielk/errcheck@v1.6.3 && \
-    go install github.com/go-delve/delve/cmd/dlv@v1.22.0 && \
+# Install Go tools
+RUN go install mvdan.cc/gofumpt@latest && \
+    go install github.com/kisielk/errcheck@latest && \
+    go install github.com/go-delve/delve/cmd/dlv@latest && \
     go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest && \
-    go install github.com/securego/gosec/v2/cmd/gosec@v2.19.0
+    go install github.com/securego/gosec/v2/cmd/gosec@latest
 
 # Builder stage
-FROM golang:1.24.0-bullseye AS builder
+FROM golang:1.25.6-bookworm AS builder
 
 WORKDIR /app
 
@@ -36,7 +36,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /go/bin/vulnerable-target ./cmd/vt
 
 # Final stage for application
-FROM alpine:latest
+FROM alpine:3.21
 
 # Install runtime dependencies
 RUN apk --no-cache add \
