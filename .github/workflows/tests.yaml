@@ -74,10 +74,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Create release
+      - name: Create draft release
         run: |
           if ! gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
-            gh release create "${GITHUB_REF_NAME}" --generate-notes
+            gh release create "${GITHUB_REF_NAME}" --draft --generate-notes
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -175,7 +175,7 @@ jobs:
           VERSION=${GITHUB_REF_NAME#v}
 
           for ARCH in amd64 arm64; do
-            GOOS=darwin GOARCH=$ARCH CGO_ENABLED=0 go build \
+            CGO_ENABLED=1 GOOS=darwin GOARCH=$ARCH go build \
               -ldflags="-s -w" -o vt ./cmd/vt/main.go
             zip "vt_${VERSION}_macOS_${ARCH}.zip" vt
             rm vt
@@ -187,5 +187,19 @@ jobs:
             vt_${VERSION}_macOS_*.zip \
             "vt_${VERSION}_macOS_checksums.txt" \
             --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-release:
+    name: "🚀 Publish Release"
+    needs: [release-linux, release-windows, release-darwin]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Publish release
+        run: gh release edit "${GITHUB_REF_NAME}" --draft=false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
