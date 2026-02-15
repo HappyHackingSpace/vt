@@ -163,7 +163,7 @@ func randomQuote() string {
 
 // isTerminal checks if stdout is a terminal.
 func isTerminal() bool {
-	return term.IsTerminal(int(os.Stdout.Fd()))
+	return term.IsTerminal(int(os.Stdout.Fd())) // #nosec G115 -- Fd() returns a small file descriptor, no overflow risk
 }
 
 // flush forces stdout to display buffered content immediately.

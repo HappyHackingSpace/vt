@@ -19,6 +19,10 @@ linters:
     gosec:
       excludes:
         - G306
+    revive:
+      rules:
+        - name: var-naming
+          disabled: true
 
 formatters:
   enable:
