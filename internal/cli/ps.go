@@ -12,10 +12,16 @@ import (
 
 // newPsCommand creates the ps command.
 func (c *CLI) newPsCommand() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "ps",
 		Short: "List running deployments and their status",
-		Run: func(_ *cobra.Command, _ []string) {
+		Run: func(cmd *cobra.Command, _ []string) {
+			refresh, err := cmd.Flags().GetBool("refresh")
+			if err != nil {
+				log.Error().Msgf("%v", err)
+				return
+			}
+
 			deployments, err := c.app.StateManager.ListDeployments()
 			if err != nil {
 				log.Error().Msgf("%v", err)
@@ -47,6 +53,15 @@ func (c *CLI) newPsCommand() *cobra.Command {
 					status = s
 				}
 
+				if refresh && status != "running" {
+					if err := c.app.StateManager.RemoveDeployment(deployment.ProviderName, deployment.TemplateID); err != nil {
+						log.Error().Msgf("%v", err)
+					} else {
+						log.Info().Msgf("removed stale deployment %s on %s", deployment.TemplateID, deployment.ProviderName)
+					}
+					continue
+				}
+
 				t.AppendRow(table.Row{
 					deployment.ProviderName,
 					deployment.TemplateID,
@@ -64,4 +79,8 @@ func (c *CLI) newPsCommand() *cobra.Command {
 			t.Render()
 		},
 	}
+
+	cmd.Flags().BoolP("refresh", "r", false, "Remove stale deployments that are no longer running")
+
+	return cmd
 }
