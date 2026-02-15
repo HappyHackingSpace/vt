@@ -47,19 +47,25 @@ func (c *CLI) newPsCommand() *cobra.Command {
 				}
 
 				status := "unknown"
+				statusErr := false
 				if s, err := provider.Status(template); err != nil {
 					log.Error().Msgf("%v", err)
+					statusErr = true
 				} else {
 					status = s
 				}
 
 				if refresh && status != "running" {
-					if err := c.app.StateManager.RemoveDeployment(deployment.ProviderName, deployment.TemplateID); err != nil {
-						log.Error().Msgf("%v", err)
+					if statusErr {
+						log.Warn().Msgf("skipping refresh for %s on %s: status could not be determined", deployment.TemplateID, deployment.ProviderName)
 					} else {
-						log.Info().Msgf("removed stale deployment %s on %s", deployment.TemplateID, deployment.ProviderName)
+						if err := c.app.StateManager.RemoveDeployment(deployment.ProviderName, deployment.TemplateID); err != nil {
+							log.Error().Msgf("%v", err)
+						} else {
+							log.Info().Msgf("removed stale deployment %s on %s", deployment.TemplateID, deployment.ProviderName)
+						}
+						continue
 					}
-					continue
 				}
 
 				t.AppendRow(table.Row{
