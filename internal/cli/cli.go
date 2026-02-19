@@ -56,31 +56,31 @@ func (c *CLI) setupCommands() {
 		SilenceErrors: true,
 	}
 
-	cyan := "\033[36m"
+	darkRed := "\033[31m"
 	reset := "\033[0m"
 
 	// Custom Usage Template with colors
 	customUsageTemplate := `{{if .Short}}{{.Short | printf "\n%s\n"}}{{end}}{{if .Long}}{{.Long | printf "\n%s\n"}}{{end}}
-` + cyan + `Usage:` + reset + `{{if .Runnable}}
+` + darkRed + `Usage:` + reset + `{{if .Runnable}}
   {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
   {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
 
-` + cyan + `Aliases:` + reset + `
+` + darkRed + `Aliases:` + reset + `
   {{.NameAndAliases}}{{end}}{{if .HasExample}}
 
-` + cyan + `Examples:` + reset + `
+` + darkRed + `Examples:` + reset + `
 {{.Example}}{{end}}{{if .HasAvailableSubCommands}}
 
-` + cyan + `Available Commands:` + reset + `{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
+` + darkRed + `Available Commands:` + reset + `{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
   {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
 
-` + cyan + `Flags:` + reset + `
+` + darkRed + `Flags:` + reset + `
 {{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
 
-` + cyan + `Global Flags:` + reset + `
+` + darkRed + `Global Flags:` + reset + `
 {{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}
 
-` + cyan + `Additional help topics:` + reset + `{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
+` + darkRed + `Additional help topics:` + reset + `{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
   {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
 
 Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
