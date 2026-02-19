@@ -4,7 +4,7 @@
  HHS     HHS HHSHHSHHSHHS
  HHS     HHS     HHS
  HHS     HHS     HHS
- HHSx   xHHS     HHS      - Create vulnerable environment
+ HHSx   xHHS     HHS      - "Pirêze Hayat, Doxrî Yașanmaz." - Pișo Meheme
   xHHS xHHS      HHS      - Happy Hacking!
    HHSHHS        HHS
     HHHH         HHS
@@ -12,6 +12,7 @@
 ```
 
 ## Create intentionally vulnerable environments for security testing, education, and research
+> create, teach, learn, hack, repeat!
 
 [![Go Version](https://img.shields.io/github/go-mod/go-version/HappyHackingSpace/vt?style=flat-square)](https://go.dev/)
 [![License](https://img.shields.io/github/license/HappyHackingSpace/vt?style=flat-square)](LICENSE)
