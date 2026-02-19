@@ -1,11 +1,14 @@
 <div align="center">
 
 ```text
-               __                     __    __        __                       __
- _  __ ____ __/ /____  ___ _______ _/ /   / /_____ _/ /____ ____ _____ ____  / /_
-| |/ // / // / // _ \/ -_) __/ _ `/ _ \ / __/ _ `/ __/ _ `/ -_) __/ _ `/ -_)/ __/
-|___/\_,_/_//_//_//_/\__/_/  \_,_/_.__/ \__/\_,_/_/  \_, /\__/\__/\_, /\__/ \__/
-                                                    /___/        /___/
+ HHS     HHS HHSHHSHHSHHS
+ HHS     HHS     HHS
+ HHS     HHS     HHS
+ HHSx   xHHS     HHS      - Create vulnerable environment
+  xHHS xHHS      HHS      - Happy Hacking!
+   HHSHHS        HHS
+    HHHH         HHS
+     HHS         HHS
 ```
 
 ## Create intentionally vulnerable environments for security testing, education, and research

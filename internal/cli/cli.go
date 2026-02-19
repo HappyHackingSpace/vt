@@ -44,7 +44,7 @@ func New(application *app.App) *CLI {
 func (c *CLI) setupCommands() {
 	c.rootCmd = &cobra.Command{
 		Use:     "vt",
-		Short:   "Create vulnerable environment",
+		Short:   banner.RainbowText("────────────────────────────────────────────────────────────────────────────────"),
 		Version: banner.AppVersion,
 		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
 			verbosityLevel, err := cmd.Flags().GetString("verbosity")
@@ -56,12 +56,43 @@ func (c *CLI) setupCommands() {
 		SilenceErrors: true,
 	}
 
+	cyan := "\033[36m"
+	reset := "\033[0m"
+
+	// Custom Usage Template with colors
+	customUsageTemplate := `{{if .Short}}{{.Short | printf "\n%s\n"}}{{end}}{{if .Long}}{{.Long | printf "\n%s\n"}}{{end}}
+` + cyan + `Usage:` + reset + `{{if .Runnable}}
+  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
+  {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
+
+` + cyan + `Aliases:` + reset + `
+  {{.NameAndAliases}}{{end}}{{if .HasExample}}
+
+` + cyan + `Examples:` + reset + `
+{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
+
+` + cyan + `Available Commands:` + reset + `{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
+  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
+
+` + cyan + `Flags:` + reset + `
+{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
+
+` + cyan + `Global Flags:` + reset + `
+{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}
+
+` + cyan + `Additional help topics:` + reset + `{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
+  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
+
+Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
+`
+	c.rootCmd.SetUsageTemplate(customUsageTemplate)
+
 	// Custom help function that prints animated banner first
-	defaultHelp := c.rootCmd.HelpFunc()
-	c.rootCmd.SetHelpFunc(func(cmd *cobra.Command, args []string) {
+	c.rootCmd.SetHelpFunc(func(cmd *cobra.Command, _ []string) {
 		banner.Print()
-		fmt.Println()
-		defaultHelp(cmd, args)
+		if err := cmd.Usage(); err != nil {
+			log.Fatal().Msgf("%v", err)
+		}
 	})
 
 	// Setup root flags
