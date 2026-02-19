@@ -5,9 +5,7 @@ import (
 	"github.com/happyhackingspace/vt/internal/app"
 	"github.com/happyhackingspace/vt/internal/cli"
 	"github.com/happyhackingspace/vt/internal/logger"
-	"github.com/happyhackingspace/vt/internal/state"
 	"github.com/happyhackingspace/vt/pkg/provider/registry"
-	"github.com/happyhackingspace/vt/pkg/store/disk"
 	"github.com/happyhackingspace/vt/pkg/template"
 	"github.com/rs/zerolog/log"
 )
@@ -23,17 +21,9 @@ func main() {
 		log.Fatal().Err(err).Msg("failed to load templates")
 	}
 
-	storeCfg := disk.NewConfig().
-		WithFileName("deployments.db").
-		WithBucketName("deployments")
-	stateManager, err := state.NewManager(storeCfg)
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed to create state manager")
-	}
+	providers := registry.NewProviders()
 
-	providers := registry.NewProviders(stateManager)
-
-	application := app.NewApp(templates, providers, stateManager, cfg)
+	application := app.NewApp(templates, providers, cfg)
 
 	if err := cli.New(application).Run(); err != nil {
 		log.Fatal().Err(err).Msg("CLI error")

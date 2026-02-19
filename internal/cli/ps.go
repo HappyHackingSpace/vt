@@ -4,7 +4,6 @@ import (
 	"os"
 	"time"
 
-	tmpl "github.com/happyhackingspace/vt/pkg/template"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -16,44 +15,28 @@ func (c *CLI) newPsCommand() *cobra.Command {
 		Use:   "ps",
 		Short: "List running deployments and their status",
 		Run: func(_ *cobra.Command, _ []string) {
-			deployments, err := c.app.StateManager.ListDeployments()
-			if err != nil {
-				log.Error().Msgf("%v", err)
-				return
-			}
-
 			t := table.NewWriter()
 			t.SetStyle(table.StyleDefault)
 			t.SetOutputMirror(os.Stdout)
 			t.AppendHeader(table.Row{"Provider Name", "Template ID", "Status", "Created At"})
 
 			count := 0
-			for _, deployment := range deployments {
-				provider, ok := c.app.GetProvider(deployment.ProviderName)
-				if !ok {
-					log.Error().Msgf("provider %q not found", deployment.ProviderName)
-					continue
-				}
-				template, err := tmpl.GetByID(c.app.Templates, deployment.TemplateID)
+			for _, provider := range c.app.Providers {
+				deployments, err := provider.List()
 				if err != nil {
-					log.Error().Msgf("%v", err)
+					log.Error().Msgf("failed to list deployments from %s: %v", provider.Name(), err)
 					continue
 				}
 
-				status := "unknown"
-				if s, err := provider.Status(template); err != nil {
-					log.Error().Msgf("%v", err)
-				} else {
-					status = s
+				for _, deployment := range deployments {
+					t.AppendRow(table.Row{
+						deployment.ProviderName,
+						deployment.TemplateID,
+						deployment.Status,
+						deployment.CreatedAt.Format(time.DateTime),
+					})
+					count++
 				}
-
-				t.AppendRow(table.Row{
-					deployment.ProviderName,
-					deployment.TemplateID,
-					status,
-					deployment.CreatedAt.Format(time.DateTime),
-				})
-				count++
 			}
 
 			if count == 0 {

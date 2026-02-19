@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/happyhackingspace/vt/internal/state"
 	"github.com/happyhackingspace/vt/pkg/provider"
 	"github.com/happyhackingspace/vt/pkg/template"
 )
@@ -19,10 +18,9 @@ type Config struct {
 
 // App is the dependency container for the application.
 type App struct {
-	Templates    map[string]template.Template
-	Providers    map[string]provider.Provider
-	StateManager *state.Manager
-	Config       *Config
+	Templates map[string]template.Template
+	Providers map[string]provider.Provider
+	Config    *Config
 }
 
 // DefaultConfig returns the default application configuration.
@@ -43,14 +41,12 @@ func DefaultConfig() *Config {
 func NewApp(
 	templates map[string]template.Template,
 	providers map[string]provider.Provider,
-	stateManager *state.Manager,
 	config *Config,
 ) *App {
 	return &App{
-		Templates:    templates,
-		Providers:    providers,
-		StateManager: stateManager,
-		Config:       config,
+		Templates: templates,
+		Providers: providers,
+		Config:    config,
 	}
 }
 
