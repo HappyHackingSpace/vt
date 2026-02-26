@@ -1,0 +1,3 @@
+[default.extend-identifiers]
+# normalized distance in reticle rendering (banner.go)
+nd = "nd"
