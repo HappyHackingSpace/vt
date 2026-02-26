@@ -17,7 +17,7 @@ const TemplateRemoteRepository string = "https://github.com/HappyHackingSpace/vt
 type Template struct {
 	ID             string                    `yaml:"id"`
 	Info           Info                      `yaml:"info"`
-	ProofOfConcept map[string][]string       `yaml:"poc"`
+	ProofOfConcept map[string]any            `yaml:"poc"`
 	Remediation    []string                  `yaml:"remediation"`
 	Providers      map[string]ProviderConfig `yaml:"providers"`
 	PostInstall    []string                  `yaml:"post-install"`
@@ -40,7 +40,9 @@ type Info struct {
 
 // ProviderConfig contains configuration for a specific provider.
 type ProviderConfig struct {
-	Path string `yaml:"path"`
+	Path  string `yaml:"path"`
+	Image string `yaml:"image,omitempty"`
+	Ports []int  `yaml:"ports,omitempty"`
 }
 
 // Cvss represents Common Vulnerability Scoring System information.
@@ -77,15 +79,36 @@ func (t Template) String() string {
 	return tw.Render()
 }
 
-func formatPoc(poc map[string][]string) string {
+func formatPoc(poc map[string]any) string {
 	if len(poc) == 0 {
 		return ""
 	}
 	var parts []string
-	for key, values := range poc {
-		parts = append(parts, fmt.Sprintf("%s: %s", key, strings.Join(values, ", ")))
+	for key, value := range poc {
+		parts = append(parts, fmt.Sprintf("%s: %s", key, formatPocValue(value)))
 	}
 	return strings.Join(parts, "\n")
+}
+
+func formatPocValue(v any) string {
+	switch val := v.(type) {
+	case []any:
+		strs := make([]string, 0, len(val))
+		for _, item := range val {
+			strs = append(strs, fmt.Sprintf("%v", item))
+		}
+		return strings.Join(strs, ", ")
+	case []string:
+		return strings.Join(val, ", ")
+	case map[string]any:
+		var nested []string
+		for k, nv := range val {
+			nested = append(nested, fmt.Sprintf("%s=%v", k, nv))
+		}
+		return "{" + strings.Join(nested, ", ") + "}"
+	default:
+		return fmt.Sprintf("%v", val)
+	}
 }
 
 func formatProviders(providers map[string]ProviderConfig) string {
