@@ -2,7 +2,7 @@ package dockercompose
 
 import (
 	"context"
-	"fmt"
+	"strings"
 	"time"
 
 	"github.com/compose-spec/compose-go/v2/loader"
@@ -37,7 +37,7 @@ func loadComposeProject(template tmpl.Template) (*types.Project, error) {
 		return nil, err
 	}
 
-	projectName := fmt.Sprintf("vt-compose-%s", template.ID)
+	projectName := toProjectName(template.ID)
 
 	configDetails := types.ConfigDetails{
 		WorkingDir: workingDir,
@@ -77,6 +77,7 @@ func loadComposeProject(template tmpl.Template) (*types.Project, error) {
 		serviceCopy.Labels["com.docker.compose.project.config_files"] = composePath
 		serviceCopy.Labels["com.docker.compose.config-hash"] = name
 		serviceCopy.Labels["com.docker.compose.oneoff"] = "False"
+		serviceCopy.Labels["vt.template-id"] = template.ID
 		updatedServices[name] = serviceCopy
 	}
 	project.Services = updatedServices
@@ -171,4 +172,49 @@ func runComposeStats(dockerCli command.Cli, project *types.Project) (bool, error
 	}
 
 	return true, nil
+}
+
+const vtProjectPrefix = "vt-"
+
+// toProjectName converts a template ID to a Docker Compose project name.
+// Strips "vt-" prefix if present, then prepends "vt-":
+//   - "vt-xbow-034" → "vt-xbow-034"
+//   - "mytemplate"   → "vt-mytemplate"
+func toProjectName(templateID string) string {
+	return vtProjectPrefix + strings.TrimPrefix(templateID, vtProjectPrefix)
+}
+
+// toTemplateID extracts the template ID from a Docker Compose project name.
+func toTemplateID(projectName string) string {
+	return projectName
+}
+
+// listVTProjects lists all running vt projects via Docker API.
+func listVTProjects(dockerCli command.Cli) ([]api.Stack, error) {
+	composeService := compose.NewComposeService(dockerCli)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	stacks, err := composeService.List(ctx, api.ListOptions{All: true})
+	if err != nil {
+		return nil, err
+	}
+
+	var vtStacks []api.Stack
+	for _, stack := range stacks {
+		if strings.HasPrefix(stack.Name, vtProjectPrefix) {
+			vtStacks = append(vtStacks, stack)
+		}
+	}
+
+	return vtStacks, nil
+}
+
+// getProjectContainers returns container details for a given project name.
+func getProjectContainers(dockerCli command.Cli, projectName string) ([]api.ContainerSummary, error) {
+	composeService := compose.NewComposeService(dockerCli)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	return composeService.Ps(ctx, projectName, api.PsOptions{All: true})
 }
