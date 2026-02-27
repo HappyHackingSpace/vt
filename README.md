@@ -1,14 +1,8 @@
 <div align="center">
 
-```text
-               __                     __    __        __                       __
- _  __ ____ __/ /____  ___ _______ _/ /   / /_____ _/ /____ ____ _____ ____  / /_
-| |/ // / // / // _ \/ -_) __/ _ `/ _ \ / __/ _ `/ __/ _ `/ -_) __/ _ `/ -_)/ __/
-|___/\_,_/_//_//_//_/\__/_/  \_,_/_.__/ \__/\_,_/_/  \_, /\__/\__/\_, /\__/ \__/
-                                                    /___/        /___/
-```
+  <img src="assets/banner.png" alt="vt logo" width="350"/>
 
-## Create intentionally vulnerable environments for security testing, education, and research
+Spin up vulnerable targets from your terminal 🎯
 
 [![Go Version](https://img.shields.io/github/go-mod/go-version/HappyHackingSpace/vt?style=flat-square)](https://go.dev/)
 [![License](https://img.shields.io/github/license/HappyHackingSpace/vt?style=flat-square)](LICENSE)
@@ -17,7 +11,7 @@
 
 </div>
 
-> [!Important]
+> [!CAUTION]
 > **This project is in active development.** Expect breaking changes with releases. Review the [release changelog](https://github.com/HappyHackingSpace/vt/releases) before updating. **vt** creates intentionally vulnerable environments - always run in isolated networks (VMs/sandboxes) and never expose to the internet.
 
 ---
