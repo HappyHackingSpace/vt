@@ -3,7 +3,7 @@ module github.com/happyhackingspace/vt
 go 1.25.6
 
 require (
-	github.com/compose-spec/compose-go/v2 v2.9.1
+	github.com/compose-spec/compose-go/v2 v2.10.1
 	github.com/docker/cli v28.5.1+incompatible
 	github.com/docker/compose/v2 v2.40.3
 	github.com/go-git/go-git/v5 v5.17.0
@@ -193,6 +193,7 @@ require (
 	go.opentelemetry.io/proto/otlp v1.7.1 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
+	go.yaml.in/yaml/v4 v4.0.0-rc.3 // indirect
 	golang.org/x/crypto v0.46.0 // indirect
 	golang.org/x/mod v0.31.0 // indirect
 	golang.org/x/net v0.48.0 // indirect
