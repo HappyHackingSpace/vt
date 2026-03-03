@@ -15,12 +15,11 @@ import (
 	"golang.org/x/term"
 )
 
-const (
-	// AppName is the application name.
-	AppName = "vt"
-	// AppVersion is the application version.
-	AppVersion = "v0.0.1"
-)
+// AppName is the application name.
+const AppName = "vt"
+
+// AppVersion is the application version, injected at build time via -ldflags.
+var AppVersion = "dev"
 
 // DANGER (#FF3355) base RGB — matching JS DANGER_RGB.
 const (
