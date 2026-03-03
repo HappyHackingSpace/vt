@@ -104,7 +104,7 @@ jobs:
 
           for ARCH in amd64 386 arm arm64; do
             GOOS=linux GOARCH=$ARCH CGO_ENABLED=0 go build \
-              -ldflags="-s -w" -o vt ./cmd/vt/main.go
+              -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${GITHUB_REF_NAME}'" -o vt ./cmd/vt/main.go
             zip "vt_${VERSION}_linux_${ARCH}.zip" vt
             rm vt
           done
@@ -140,7 +140,7 @@ jobs:
 
           for ARCH in amd64 386 arm64; do
             GOOS=windows GOARCH=$ARCH CGO_ENABLED=0 go build \
-              -ldflags="-s -w" -o vt.exe ./cmd/vt/main.go
+              -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${GITHUB_REF_NAME}'" -o vt.exe ./cmd/vt/main.go
             zip "vt_${VERSION}_windows_${ARCH}.zip" vt.exe
             rm vt.exe
           done
@@ -176,7 +176,7 @@ jobs:
 
           for ARCH in amd64 arm64; do
             CGO_ENABLED=1 GOOS=darwin GOARCH=$ARCH go build \
-              -ldflags="-s -w" -o vt ./cmd/vt/main.go
+              -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${GITHUB_REF_NAME}'" -o vt ./cmd/vt/main.go
             zip "vt_${VERSION}_macOS_${ARCH}.zip" vt
             rm vt
           done
