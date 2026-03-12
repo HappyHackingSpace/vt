@@ -171,6 +171,13 @@ Templates are automatically cloned to `~/vt-templates` on first run.
 
 ---
 
+## Contributors
+
+<!-- readme: collaborators,contributors -start -->
+<!-- readme: collaborators,contributors -end -->
+
+---
+
 ## Community
 
 - 💬 **Discord**: [Join our community](https://discord.happyhacking.space)
