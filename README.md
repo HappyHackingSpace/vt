@@ -174,6 +174,63 @@ Templates are automatically cloned to `~/vt-templates` on first run.
 ## Contributors
 
 <!-- readme: collaborators,contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/recepgunes1">
+                    <img src="https://avatars.githubusercontent.com/u/28866347?v=4" width="100;" alt="recepgunes1"/>
+                    <br />
+                    <sub><b>Recep Gunes</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/dogancanbakir">
+                    <img src="https://avatars.githubusercontent.com/u/65292895?v=4" width="100;" alt="dogancanbakir"/>
+                    <br />
+                    <sub><b>Dogan Can Bakir</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/omarkurt">
+                    <img src="https://avatars.githubusercontent.com/u/1712468?v=4" width="100;" alt="omarkurt"/>
+                    <br />
+                    <sub><b>Omar Kurt</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ahsentekd">
+                    <img src="https://avatars.githubusercontent.com/u/23294573?v=4" width="100;" alt="ahsentekd"/>
+                    <br />
+                    <sub><b>Ahsen</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/atiilla">
+                    <img src="https://avatars.githubusercontent.com/u/9992685?v=4" width="100;" alt="atiilla"/>
+                    <br />
+                    <sub><b>Atilla</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/mirackayikci">
+                    <img src="https://avatars.githubusercontent.com/u/134744464?v=4" width="100;" alt="mirackayikci"/>
+                    <br />
+                    <sub><b>mirackayikci</b></sub>
+                </a>
+            </td>
+		</tr>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/numanturle">
+                    <img src="https://avatars.githubusercontent.com/u/7007951?v=4" width="100;" alt="numanturle"/>
+                    <br />
+                    <sub><b>numan</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: collaborators,contributors -end -->
 
 ---
