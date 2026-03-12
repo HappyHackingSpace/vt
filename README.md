@@ -159,6 +159,18 @@ Templates are automatically cloned to `~/vt-templates` on first run.
 
 ---
 
+## Star History
+
+<a href="https://star-history.com/#HappyHackingSpace/vt&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=HappyHackingSpace/vt&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=HappyHackingSpace/vt&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=HappyHackingSpace/vt&type=Date" />
+  </picture>
+</a>
+
+---
+
 ## Community
 
 - 💬 **Discord**: [Join our community](https://discord.happyhacking.space)
