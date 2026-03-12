@@ -3,7 +3,7 @@ name: Update Contributors
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   contrib-readme-job:
@@ -18,6 +18,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            auto_detect_branch_protection: true
-            commit_message: "docs(contributor): contrib-readme-action has updated readme"
-            pr_title_on_protected: "docs(contributor): contributors readme action update"
+          auto_detect_branch_protection: true
+          commit_message: "docs(contributor): contrib-readme-action has updated readme"
+          pr_title_on_protected: "docs(contributor): contributors readme action update"
