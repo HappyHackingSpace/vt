@@ -25,6 +25,8 @@ Spin up vulnerable targets from your terminal 🎯
 - [Templates](#templates)
 - [What can you do with vt?](#what-can-you-do-with-vt)
 - [Documentation](#documentation)
+- [Star History](#star-history)
+- [Contributors](#contributors)
 - [Community](#community)
 - [License](#license)
 
@@ -91,10 +93,8 @@ vt start --id vt-dvwa
 | `vt template --list --filter <tag>` | Filter templates by tag |
 | `vt template --update` | Update templates from remote repository |
 | `vt start --id <template-id>` | Start a vulnerable environment |
-| `vt start --tags <tag1,tag2>` | Start all templates matching tags |
 | `vt ps` | List running environments |
 | `vt stop --id <template-id>` | Stop an environment |
-| `vt stop --tags <tag1,tag2>` | Stop all templates matching tags |
 | `vt -v debug <command>` | Run with debug verbosity |
 
 </details>
@@ -107,9 +107,6 @@ vt template --list --filter sqli
 
 # Start DVWA (Damn Vulnerable Web App)
 vt start --id vt-dvwa
-
-# Start all XSS-related labs
-vt start --tags xss
 
 # Check running environments
 vt ps
@@ -245,7 +242,7 @@ Templates are automatically cloned to `~/vt-templates` on first run.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details.
 
 ---
 
