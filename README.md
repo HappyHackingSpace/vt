@@ -38,7 +38,6 @@ Spin up vulnerable targets from your terminal 🎯
 |:--:|---------|-------------|
 | 🐳 | **Docker Compose** | Container orchestration for vulnerable environments |
 | 📦 | **Templates** | Community-curated vulnerable targets from [vt-templates](https://github.com/HappyHackingSpace/vt-templates) |
-| 🏷️ | **Tag Filtering** | Find templates by vulnerability type (sqli, xss, ssrf, etc.) |
 | 📊 | **State Tracking** | Track and manage running deployments |
 | 🔄 | **Auto-Update** | Sync templates from remote repository |
 
