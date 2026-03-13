@@ -25,6 +25,8 @@ Spin up vulnerable targets from your terminal 🎯
 - [Templates](#templates)
 - [What can you do with vt?](#what-can-you-do-with-vt)
 - [Documentation](#documentation)
+- [Star History](#star-history)
+- [Contributors](#contributors)
 - [Community](#community)
 - [License](#license)
 
@@ -91,10 +93,8 @@ vt start --id vt-dvwa
 | `vt template --list --filter <tag>` | Filter templates by tag |
 | `vt template --update` | Update templates from remote repository |
 | `vt start --id <template-id>` | Start a vulnerable environment |
-| `vt start --tags <tag1,tag2>` | Start all templates matching tags |
 | `vt ps` | List running environments |
 | `vt stop --id <template-id>` | Stop an environment |
-| `vt stop --tags <tag1,tag2>` | Stop all templates matching tags |
 | `vt -v debug <command>` | Run with debug verbosity |
 
 </details>
@@ -107,9 +107,6 @@ vt template --list --filter sqli
 
 # Start DVWA (Damn Vulnerable Web App)
 vt start --id vt-dvwa
-
-# Start all XSS-related labs
-vt start --tags xss
 
 # Check running environments
 vt ps
@@ -174,6 +171,63 @@ Templates are automatically cloned to `~/vt-templates` on first run.
 ## Contributors
 
 <!-- readme: collaborators,contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/recepgunes1">
+                    <img src="https://avatars.githubusercontent.com/u/28866347?v=4" width="100;" alt="recepgunes1"/>
+                    <br />
+                    <sub><b>Recep Gunes</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/dogancanbakir">
+                    <img src="https://avatars.githubusercontent.com/u/65292895?v=4" width="100;" alt="dogancanbakir"/>
+                    <br />
+                    <sub><b>Dogan Can Bakir</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/omarkurt">
+                    <img src="https://avatars.githubusercontent.com/u/1712468?v=4" width="100;" alt="omarkurt"/>
+                    <br />
+                    <sub><b>Omar Kurt</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ahsentekd">
+                    <img src="https://avatars.githubusercontent.com/u/23294573?v=4" width="100;" alt="ahsentekd"/>
+                    <br />
+                    <sub><b>Ahsen</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/atiilla">
+                    <img src="https://avatars.githubusercontent.com/u/9992685?v=4" width="100;" alt="atiilla"/>
+                    <br />
+                    <sub><b>Atilla</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/mirackayikci">
+                    <img src="https://avatars.githubusercontent.com/u/134744464?v=4" width="100;" alt="mirackayikci"/>
+                    <br />
+                    <sub><b>mirackayikci</b></sub>
+                </a>
+            </td>
+		</tr>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/numanturle">
+                    <img src="https://avatars.githubusercontent.com/u/7007951?v=4" width="100;" alt="numanturle"/>
+                    <br />
+                    <sub><b>numan</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: collaborators,contributors -end -->
 
 ---
@@ -188,7 +242,7 @@ Templates are automatically cloned to `~/vt-templates` on first run.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details.
 
 ---
 

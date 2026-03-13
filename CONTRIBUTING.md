@@ -7,12 +7,14 @@ We welcome contributions from everyone! Here's how you can contribute:
     Start by forking our [vulnerable-target repository](https://github.com/HappyHackingSpace/vulnerable-target).
 
 2. **Create a New Branch**
+    - Always base your work from the `dev` branch, which is the development branch with the latest code.
     - Make your changes
     - If you want to add a new vulnerable target template, please contribute to our separate templates repository: [vt-templates](https://github.com/HappyHackingSpace/vt-templates). You can check the [example template](https://github.com/HappyHackingSpace/vt-templates/blob/main/cves/vt-2024-53995/index.yaml).
     - Test your changes locally before submitting
 
 3. **Submit a Pull Request**
-    - Open a pull request with your changes
+    - Open a pull request targeting the **`dev`** branch
+    - CI will automatically run linting, security scans, and tests on your PR
     - Include a clear description of what your contribution adds
     - Reference any related issues
 
