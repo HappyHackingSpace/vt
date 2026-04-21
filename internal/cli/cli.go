@@ -47,6 +47,7 @@ func (c *CLI) setupCommands() {
 		Short:   "Create vulnerable environment",
 		Version: banner.AppVersion,
 		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
+			banner.Print()
 			verbosityLevel, err := cmd.Flags().GetString("verbosity")
 			if err != nil {
 				log.Fatal().Msgf("%v", err)
