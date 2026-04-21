@@ -52,8 +52,15 @@ var quotesList = []Quote{
 	{Text: "Information wants to be free.", Author: "Stewart Brand"},
 }
 
-// Character set matching JS RETICLE_CHARS — 20 katakana + 16 hex digits.
-var matrixChars = []rune("アイウエオカキクケコサシスセソタチツテト0123456789ABCDEF")
+// charSets contains alternate character sets for the reticle animation.
+// One is chosen at random each run.
+var charSets = [][]rune{
+	[]rune("アイウエオカキクケコサシスセソタチツテト0123456789ABCDEF"), // Katakana
+	[]rune("АБВГДЕЖЗИКЛМНОПРСТУФ0123456789ABCDEF"), // Cyrillic
+	[]rune("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥ0123456789ABCDEF"), // Greek
+}
+
+var matrixChars []rune
 
 const (
 	reticleWidth   = 80
@@ -89,11 +96,14 @@ type reticleChar struct {
 var reticleChars []reticleChar
 
 func init() {
+	matrixChars = charSets[mathrand.Intn(len(charSets))] // #nosec G404 -- decorative
 	reticleChars = generateReticle()
 }
 
 func isWide(r rune) bool {
-	return r >= 0x30A0 && r <= 0x30FF
+	return (r >= 0x30A0 && r <= 0x30FF) || // Katakana
+		(r >= 0x4E00 && r <= 0x9FFF) || // CJK
+		(r >= 0xAC00 && r <= 0xD7AF) // Hangul
 }
 
 func visibleWidth(s string) int {
