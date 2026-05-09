@@ -43,7 +43,7 @@ providers:
 	err = os.WriteFile(filepath.Join(tempDir, "index.yaml"), []byte(templateContent), 0644)
 	assert.NoError(t, err)
 
-	tpl, err := LoadTemplate(tempDir)
+	tpl, err := loadTemplate(tempDir)
 	assert.NoError(t, err)
 	assert.Equal(t, "example-template", tpl.ID)
 	assert.Equal(t, "Vulnerable Target", tpl.Info.Name)
@@ -53,7 +53,7 @@ providers:
 	assert.Contains(t, tpl.Providers, "docker-compose")
 
 	// case of none exist path
-	_, err = LoadTemplate("/non/existent/path")
+	_, err = loadTemplate("/non/existent/path")
 	assert.Error(t, err)
 
 }

@@ -16,14 +16,14 @@ func main() {
 	appLogger := logger.NewWithLevel(cfg.LogLevel)
 	logger.SetGlobal(appLogger)
 
-	templates, err := template.LoadTemplates(cfg.TemplatesPath)
+	templates, playbooks, err := template.LoadRepo(cfg.TemplatesPath)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to load templates")
 	}
 
 	providers := registry.NewProviders()
 
-	application := app.NewApp(templates, providers, cfg)
+	application := app.NewApp(templates, playbooks, providers, cfg)
 
 	if err := cli.New(application).Run(); err != nil {
 		log.Fatal().Err(err).Msg("CLI error")
