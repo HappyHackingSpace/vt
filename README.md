@@ -23,6 +23,7 @@ Spin up vulnerable targets from your terminal 🎯
 - [Quick Start](#quick-start)
 - [Usage](#usage)
 - [Templates](#templates)
+- [Playbooks](#playbooks)
 - [What can you do with vt?](#what-can-you-do-with-vt)
 - [Documentation](#documentation)
 - [Star History](#star-history)
@@ -38,7 +39,9 @@ Spin up vulnerable targets from your terminal 🎯
 |:--:|---------|-------------|
 | 🐳 | **Docker Compose** | Container orchestration for vulnerable environments |
 | 📦 | **Templates** | Community-curated vulnerable targets from [vt-templates](https://github.com/HappyHackingSpace/vt-templates) |
+| 📓 | **Playbooks** | Group multiple templates into training scenarios and run them together |
 | 📊 | **State Tracking** | Track and manage running deployments |
+| 🔍 | **Inspect** | View detailed info (CVE, CVSS, CWE, PoC, remediation) for any template or playbook |
 | 🔄 | **Auto-Update** | Sync templates from remote repository |
 
 ---
@@ -47,7 +50,7 @@ Spin up vulnerable targets from your terminal 🎯
 
 ### Prerequisites
 
-- Go 1.24+
+- Go 1.25.6+
 - Docker & Docker Compose
 
 ### Install with Go
@@ -86,15 +89,36 @@ vt start --id vt-dvwa
 <details>
 <summary><b>Command Reference</b></summary>
 
+**Templates**
+
 | Command | Description |
 |---------|-------------|
 | `vt template --list` | List all available templates |
 | `vt template --list --filter <tag>` | Filter templates by tag |
 | `vt template --update` | Update templates from remote repository |
+
+**Environments**
+
+| Command | Description |
+|---------|-------------|
 | `vt start --id <template-id>` | Start a vulnerable environment |
-| `vt ps` | List running environments |
 | `vt stop --id <template-id>` | Stop an environment |
-| `vt -v debug <command>` | Run with debug verbosity |
+| `vt ps` | List all running environments |
+| `vt inspect --id <template-id>` | Show full details for a template |
+
+**Playbooks**
+
+| Command | Description |
+|---------|-------------|
+| `vt playbook list` | List all available playbooks |
+| `vt playbook run --id <playbook-id>` | Start all templates in a playbook |
+| `vt playbook stop --id <playbook-id>` | Stop all templates in a playbook |
+
+**Global Flags**
+
+| Flag | Values | Description |
+|------|--------|-------------|
+| `-v, --verbosity` | `debug` `info` `warn` `error` `fatal` `panic` | Set log verbosity (default: `info`) |
 
 </details>
 
@@ -107,11 +131,23 @@ vt template --list --filter sqli
 # Start DVWA (Damn Vulnerable Web App)
 vt start --id vt-dvwa
 
+# Inspect a template — see CVE, CVSS, CWE, PoC, and remediation steps
+vt inspect --id vt-dvwa
+
 # Check running environments
 vt ps
 
 # Stop a specific environment
 vt stop --id vt-dvwa
+
+# Run an entire playbook (multiple targets at once)
+vt playbook run --id vt-pb-1
+
+# List all available playbooks
+vt playbook list
+
+# Stop all targets in a playbook
+vt playbook stop --id vt-pb-1
 ```
 
 ---
@@ -129,6 +165,25 @@ Templates are automatically cloned to `~/vt-templates` on first run.
 | `vt-mutillidae-ii` | Lab | OWASP Mutillidae II |
 
 > **Want more?** Check out the [vt-templates repository](https://github.com/HappyHackingSpace/vt-templates) for all available templates and contribution guidelines.
+
+---
+
+## Playbooks
+
+Playbooks let you start multiple vulnerable targets in one command — useful for structured training sessions or red-team labs that require several services running simultaneously.
+
+```bash
+# See what playbooks are available
+vt playbook list
+
+# Launch every target in a playbook
+vt playbook run --id vt-pb-1
+
+# Tear down the whole playbook when done
+vt playbook stop --id vt-pb-1
+```
+
+Playbooks are defined as YAML files in the `playbooks/` directory of the templates repository. Each playbook specifies an ordered list of template IDs. If one template fails to start, `vt` skips it, continues with the rest, and reports a summary of failures at the end.
 
 ---
 
