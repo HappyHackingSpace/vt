@@ -18,12 +18,17 @@ func (c *CLI) newInspectCommand() *cobra.Command {
 				log.Fatal().Msgf("%v", err)
 			}
 
-			template, err := templ.GetByID(c.app.Templates, templateID)
-			if err != nil {
-				log.Fatal().Msgf("%v", err)
+			if template, err := templ.GetByID(c.app.Templates, templateID); err == nil {
+				fmt.Println(template.String())
+				return
 			}
 
-			fmt.Println(template.String())
+			if pb, err := templ.GetPlaybookByID(c.app.Playbooks, templateID); err == nil {
+				fmt.Println(pb.String())
+				return
+			}
+
+			log.Fatal().Msgf("'%s' not found as a template or playbook", templateID)
 		},
 	}
 	cmd.Flags().String("id", "", "Specify a template ID for targeted vulnerable environment")
