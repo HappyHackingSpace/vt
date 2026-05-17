@@ -57,14 +57,13 @@ func (c *CLI) newTemplateCommand() *cobra.Command {
 					log.Error().Err(err).Msg("failed to sync templates")
 					return
 				}
-				// Reload templates after sync
-				templates, err := tmpl.LoadTemplates(c.app.Config.TemplatesPath)
+				templates, playbooks, err := tmpl.LoadRepo(c.app.Config.TemplatesPath)
 				if err != nil {
 					log.Error().Err(err).Msg("failed to reload templates")
 					return
 				}
-				// Update the app's templates
 				c.app.Templates = templates
+				c.app.Playbooks = playbooks
 				log.Info().Msg("Templates updated successfully")
 				return
 			}

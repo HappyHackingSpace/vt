@@ -76,6 +76,7 @@ func (c *CLI) setupCommands() {
 	c.rootCmd.AddCommand(c.newPsCommand())
 	c.rootCmd.AddCommand(c.newTemplateCommand())
 	c.rootCmd.AddCommand(c.newInspectCommand())
+	c.rootCmd.AddCommand(c.newPlaybookCommand())
 }
 
 // Run executes the CLI and returns any error.
