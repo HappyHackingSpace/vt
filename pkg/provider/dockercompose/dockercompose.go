@@ -52,7 +52,10 @@ func (d *DockerCompose) isRunning(template *tmpl.Template) (bool, error) {
 
 // Start launches the vulnerable target environment using Docker Compose.
 func (d *DockerCompose) Start(template *tmpl.Template) error {
-	running, _ := d.isRunning(template) //nolint:errcheck
+	running, err := d.isRunning(template)
+	if err != nil {
+		return err
+	}
 	if running {
 		return fmt.Errorf("already running")
 	}
