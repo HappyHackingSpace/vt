@@ -1,5 +1,5 @@
 # Build stage for development tools
-FROM golang:1.25.6-bookworm AS dev-tools
+FROM golang:1.27.1-bookworm AS dev-tools
 
 # Install build dependencies
 RUN apt-get update && \
@@ -19,7 +19,7 @@ RUN go install mvdan.cc/gofumpt@latest && \
     go install github.com/securego/gosec/v2/cmd/gosec@latest
 
 # Builder stage
-FROM golang:1.25.6-bookworm AS builder
+FROM golang:1.27.1-bookworm AS builder
 
 WORKDIR /app
 
@@ -36,7 +36,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /go/bin/vulnerable-target ./cmd/vt
 
 # Final stage for application
-FROM alpine:3.21
+FROM alpine:3.24
 
 # Install runtime dependencies
 RUN apk --no-cache add \
