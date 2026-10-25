@@ -1,5 +1,5 @@
 # Build stage for development tools
-FROM golang:1.25.6-bookworm AS dev-tools
+FROM golang:1.27.3-bookworm AS dev-tools
 
 # Install build dependencies
 RUN apt-get update && \
@@ -19,7 +19,7 @@ RUN go install mvdan.cc/gofumpt@latest && \
     go install github.com/securego/gosec/v2/cmd/gosec@latest
 
 # Builder stage
-FROM golang:1.25.6-bookworm AS builder
+FROM golang:1.27.3-bookworm AS builder
 
 WORKDIR /app
 
