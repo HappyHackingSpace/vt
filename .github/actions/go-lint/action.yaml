@@ -1,0 +1,34 @@
+name: "Go Lint"
+description: "Run golangci-lint, yamllint, go vet and typos"
+
+inputs:
+  golangci-config:
+    description: "Path to the golangci-lint config file"
+    required: false
+    default: ".golangci.yaml"
+  yamllint-config:
+    description: "Path to the yamllint config file"
+    required: false
+    default: ".yamllint.yaml"
+
+runs:
+  using: composite
+  steps:
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v9
+      with:
+        version: latest
+        args: --config=${{ inputs.golangci-config }}
+
+    - name: Run yamllint
+      uses: ibiqlik/action-yamllint@v3
+      with:
+        file_or_dir: .
+        config_file: ${{ inputs.yamllint-config }}
+
+    - name: Run go vet
+      shell: bash
+      run: go vet ./...
+
+    - name: Run typos
+      uses: crate-ci/typos@v1

@@ -1,0 +1,57 @@
+name: "Release Build"
+description: "Cross-compile vt for a GOOS, zip each arch and upload to the release"
+
+inputs:
+  goos:
+    description: "Target GOOS (linux, windows, darwin)"
+    required: true
+  arches:
+    description: "Space-separated GOARCH list"
+    required: true
+  os-label:
+    description: "OS label used in artifact names (linux, windows, macOS)"
+    required: true
+  cgo:
+    description: "CGO_ENABLED value for the build"
+    required: false
+    default: "0"
+  tag:
+    description: "Release tag (e.g. v1.2.3), injected as the app version"
+    required: true
+  github-token:
+    description: "Token used by gh to upload release assets"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Build and upload binaries
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        set -euo pipefail
+        TAG="${{ inputs.tag }}"
+        VERSION=${TAG#v}
+        GOOS="${{ inputs.goos }}"
+        OS_LABEL="${{ inputs.os-label }}"
+
+        BIN=vt
+        if [ "$GOOS" = "windows" ]; then
+          BIN=vt.exe
+        fi
+
+        for ARCH in ${{ inputs.arches }}; do
+          GOOS="$GOOS" GOARCH="$ARCH" CGO_ENABLED="${{ inputs.cgo }}" go build \
+            -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${TAG}'" \
+            -o "$BIN" ./cmd/vt/main.go
+          zip "vt_${VERSION}_${OS_LABEL}_${ARCH}.zip" "$BIN"
+          rm "$BIN"
+        done
+
+        shasum -a 256 vt_${VERSION}_${OS_LABEL}_*.zip > "vt_${VERSION}_${OS_LABEL}_checksums.txt"
+
+        gh release upload "$TAG" \
+          vt_${VERSION}_${OS_LABEL}_*.zip \
+          "vt_${VERSION}_${OS_LABEL}_checksums.txt" \
+          --clobber
