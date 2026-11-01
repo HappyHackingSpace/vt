@@ -279,6 +279,13 @@ Playbooks are defined as YAML files in the `playbooks/` directory of the templat
                     <sub><b>numan</b></sub>
                 </a>
             </td>
+            <td align="center">
+                <a href="https://github.com/claude">
+                    <img src="https://avatars.githubusercontent.com/u/81847?v=4" width="100;" alt="claude"/>
+                    <br />
+                    <sub><b>Claude</b></sub>
+                </a>
+            </td>
 		</tr>
 	<tbody>
 </table>
