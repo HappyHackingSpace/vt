@@ -36,7 +36,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /go/bin/vulnerable-target ./cmd/vt
 
 # Final stage for application
-FROM alpine:3.21
+FROM alpine:3.24
 
 # Install runtime dependencies
 RUN apk --no-cache add \
