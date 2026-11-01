@@ -31,13 +31,15 @@ jobs:
         run: go mod download && go mod verify && go vet ./...
 
       - name: Check go.mod integrity
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           go mod tidy
           git diff --exit-code go.mod go.sum || {
             echo "::warning::go.mod is out of sync. Pushing changes."
             git add go.mod go.sum
             git commit -m "chore(deps): go mod tidy"
-            git push origin ${{ github.head_ref }}
+            git push origin "$HEAD_REF"
           }
 
       - name: Build test
