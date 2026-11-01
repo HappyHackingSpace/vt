@@ -33,7 +33,8 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /go/bin/vulnerable-target ./cmd/vt
+ARG VERSION=dev
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${VERSION}'" -o /go/bin/vulnerable-target ./cmd/vt
 
 # Final stage for application
 FROM alpine:3.21
