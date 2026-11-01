@@ -1,0 +1,33 @@
+name: "Go Security Scan"
+description: "Run trufflehog secret scanning and gosec static analysis"
+
+inputs:
+  trufflehog-base:
+    description: "Base ref for trufflehog diff scanning"
+    required: false
+    default: ""
+  trufflehog-head:
+    description: "Head ref for trufflehog diff scanning"
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Run trufflehog
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ inputs.trufflehog-base }}
+        head: ${{ inputs.trufflehog-head }}
+        extra_args: --debug --only-verified
+
+    - name: Install gosec
+      shell: bash
+      run: |
+        go install github.com/securego/gosec/v2/cmd/gosec@latest
+        echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+
+    - name: Run gosec
+      shell: bash
+      run: gosec ./...

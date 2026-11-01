@@ -36,32 +36,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Go
-        uses: actions/setup-go@v6
+      - uses: ./.github/actions/setup-go
+
+      - uses: ./.github/actions/release-build
         with:
-          go-version: "1.25"
-          cache: true
-
-      - name: Build and upload Linux binaries
-        run: |
-          set -euo pipefail
-          VERSION=${GITHUB_REF_NAME#v}
-
-          for ARCH in amd64 386 arm arm64; do
-            GOOS=linux GOARCH=$ARCH CGO_ENABLED=0 go build \
-              -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${GITHUB_REF_NAME}'" -o vt ./cmd/vt/main.go
-            zip "vt_${VERSION}_linux_${ARCH}.zip" vt
-            rm vt
-          done
-
-          shasum -a 256 vt_${VERSION}_linux_*.zip > "vt_${VERSION}_linux_checksums.txt"
-
-          gh release upload "${GITHUB_REF_NAME}" \
-            vt_${VERSION}_linux_*.zip \
-            "vt_${VERSION}_linux_checksums.txt" \
-            --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          goos: linux
+          arches: "amd64 386 arm arm64"
+          os-label: linux
+          tag: ${{ github.ref_name }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release-windows:
     name: "🪟 Release Windows"
@@ -71,32 +54,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Go
-        uses: actions/setup-go@v6
+      - uses: ./.github/actions/setup-go
+
+      - uses: ./.github/actions/release-build
         with:
-          go-version: "1.25"
-          cache: true
-
-      - name: Build and upload Windows binaries
-        run: |
-          set -euo pipefail
-          VERSION=${GITHUB_REF_NAME#v}
-
-          for ARCH in amd64 386 arm64; do
-            GOOS=windows GOARCH=$ARCH CGO_ENABLED=0 go build \
-              -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${GITHUB_REF_NAME}'" -o vt.exe ./cmd/vt/main.go
-            zip "vt_${VERSION}_windows_${ARCH}.zip" vt.exe
-            rm vt.exe
-          done
-
-          shasum -a 256 vt_${VERSION}_windows_*.zip > "vt_${VERSION}_windows_checksums.txt"
-
-          gh release upload "${GITHUB_REF_NAME}" \
-            vt_${VERSION}_windows_*.zip \
-            "vt_${VERSION}_windows_checksums.txt" \
-            --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          goos: windows
+          arches: "amd64 386 arm64"
+          os-label: windows
+          tag: ${{ github.ref_name }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release-darwin:
     name: "🍎 Release macOS"
@@ -106,29 +72,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Go
-        uses: actions/setup-go@v6
+      - uses: ./.github/actions/setup-go
+
+      - uses: ./.github/actions/release-build
         with:
-          go-version: "1.25"
-          cache: true
-
-      - name: Build and upload macOS binaries
-        run: |
-          set -euo pipefail
-          VERSION=${GITHUB_REF_NAME#v}
-
-          for ARCH in amd64 arm64; do
-            CGO_ENABLED=1 GOOS=darwin GOARCH=$ARCH go build \
-              -ldflags="-s -w -X 'github.com/happyhackingspace/vt/internal/banner.AppVersion=${GITHUB_REF_NAME}'" -o vt ./cmd/vt/main.go
-            zip "vt_${VERSION}_macOS_${ARCH}.zip" vt
-            rm vt
-          done
-
-          shasum -a 256 vt_${VERSION}_macOS_*.zip > "vt_${VERSION}_macOS_checksums.txt"
-
-          gh release upload "${GITHUB_REF_NAME}" \
-            vt_${VERSION}_macOS_*.zip \
-            "vt_${VERSION}_macOS_checksums.txt" \
-            --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          goos: darwin
+          arches: "amd64 arm64"
+          os-label: macOS
+          cgo: "1"
+          tag: ${{ github.ref_name }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

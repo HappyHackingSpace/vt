@@ -1,0 +1,17 @@
+name: "Setup Go"
+description: "Install the project's Go toolchain with module caching"
+
+inputs:
+  go-version:
+    description: "Go version to install"
+    required: false
+    default: "1.25"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version: ${{ inputs.go-version }}
+        cache: true
