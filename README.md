@@ -93,6 +93,9 @@ vt start --id vt-dvwa
 
 | Command | Description |
 |---------|-------------|
+| `vt list` | List all available templates |
+| `vt list --filter <term>` | Filter templates by substring match on ID and name (case-insensitive) |
+| `vt list --tags <a,b>` | Filter templates by tags (exact case-insensitive match, any tag matches) |
 | `vt template --list` | List all available templates |
 | `vt template --list --filter <tag>` | Filter templates by tag |
 | `vt template --update` | Update templates from remote repository |
@@ -127,6 +130,9 @@ vt start --id vt-dvwa
 ```bash
 # List templates with SQL injection vulnerabilities
 vt template --list --filter sqli
+
+# List templates tagged sqli or xss whose ID or name contains "dvwa"
+vt list --filter dvwa --tags sqli,xss
 
 # Start DVWA (Damn Vulnerable Web App)
 vt start --id vt-dvwa
