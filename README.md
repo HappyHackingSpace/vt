@@ -1,6 +1,13 @@
 <div align="center">
 
-  <img src="assets/banner.png" alt="vt logo" width="350"/>
+  <a href="https://vulnerabletarget.com">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/brand/onion-cross-dark.svg">
+      <img src="assets/brand/onion-cross-light.svg" alt="Vulnerable Target" width="240" height="240">
+    </picture>
+  </a>
+
+  <h1>vt</h1>
 
 Spin up vulnerable targets from your terminal 🎯
 
